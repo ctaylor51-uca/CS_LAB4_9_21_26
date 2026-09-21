@@ -18,5 +18,8 @@
     <ClCompile Include="CS_LAB4_9_21_26.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileName.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
