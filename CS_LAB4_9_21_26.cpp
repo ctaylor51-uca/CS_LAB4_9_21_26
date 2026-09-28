@@ -170,6 +170,7 @@ int main()
 	std::cout << "===============================\n";
 
 	std::cout << "Inventory Audit\n";
+	std::cout << "===============================\n";
 
 	std::cout << std::left
 		<< std::setw(20) << "Item Name"
