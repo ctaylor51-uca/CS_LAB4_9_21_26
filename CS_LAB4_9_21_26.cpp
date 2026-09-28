@@ -13,6 +13,13 @@ int main()
 	char itemChoise;
 	char sizeChoice;
 	std::string sizeName;
+	double stateTax;
+	double countyTax;
+	double cityTax;
+	double totalTax;
+	double tipAmount = 0.0;
+	double finalTotal;
+	char tipChoice;
 
 	std::cout << "-----------------------------------\n";
 	std::cout << std::left << std::setw(18) << "Drink"
@@ -151,7 +158,78 @@ int main()
 	{
 		totalPrice = totalPrice * 0.90;
 	}
+	stateTax = totalPrice * 0.065;
+	countyTax = totalPrice * 0.005;
+	cityTax = totalPrice * 0.02125;
 
+	totalTax = stateTax + countyTax + cityTax;
+	std::cout << std::fixed << std::setprecision(2);
+
+	std::cout << "\nTaxes\n";
+	std::cout << std::left
+		<< std::setw(25) << "Tax Name"
+		<< std::setw(15) << "Percentage"
+		<< "Amount\n";
+
+	std::cout << std::setw(25) << "Arkansas State Tax"
+		<< std::setw(15) << "6.5%"
+		<< "$" << stateTax << "\n";
+
+	std::cout << std::setw(25) << "Faulkner County Tax"
+		<< std::setw(15) << "0.5%"
+		<< "$" << countyTax << "\n";
+
+	std::cout << std::setw(25) << "Conway Municipal Tax"
+		<< std::setw(15) << "2.125%"
+		<< "$" << cityTax << "\n";
+
+	std::cout << "Tip Selection";
+	std::cout << std::setw(15) << "Amount\n";
+
+	std::cout << std::left << std::setw(20) << "A. 15%"
+		<< "$" << totalPrice * 0.15 << "\n";
+	
+	std::cout << std::left << std::setw(20) << "B. 20%"
+		<< "$" << totalPrice * 0.20 << "\n";
+
+	std::cout << std::left << std::setw(20) << "A. 25%"
+		<< "$" << totalPrice * 0.25 << "\n";
+
+	std::cout << "D. Other Amount\n";
+
+	std::cout << "What tip do you choose?";
+	std::cin >> tipChoice; 
+
+	if (tipChoice == 'A' || tipChoice == 'a')
+	{
+		tipAmount = totalPrice * 0.15;
+	}
+	else if (tipChoice == 'B' || tipChoice == 'b')
+	{
+		tipAmount = totalPrice * 0.20;
+	}
+
+	else if (tipChoice == 'C' || tipChoice == 'c')
+	{
+		tipAmount = totalPrice * 0.25;
+	}
+
+	else if (tipChoice == 'D' || tipChoice == 'd')
+	{
+		std::cout << "How much would you like to tip?";
+		std::cin >> tipAmount;
+	}
+	else
+	{
+		std::cout << "Invalid";
+		tipAmount = 0.0;
+	}
+
+	finalTotal = totalPrice + totalTax + tipAmount;
+	std::cout << "Subtotal: $" << totalPrice << "\n";
+	std::cout << "Total Tax: $" << totalTax << "\n";
+	std::cout << "Tip: $" << tipAmount << "\n";
+	std::cout << "Total Amount: $" << finalTotal << "\n";
 
 	std::cout << "\n===============================\n";
 	std::cout << "Store Receipt\n";
