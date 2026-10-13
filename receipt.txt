@@ -1,0 +1,34 @@
+
+===============================
+Store Receipt
+Customer Name: Colton
+===============================
+Items Ordered:
+5x Medium Pepsi - $7.500000
+===============================
+Order Subtotal:   $7.50
+Member Status:    Yes (10% Discount Applied)
+Tax Charged:      $0.54
+Tip Added:        $45.00
+Total Due:        $52.29
+Loyalty Points: *****************
+Notes: f
+===============================
+
+
+===============================
+Store Receipt
+Customer Name: nathan
+===============================
+Items Ordered:
+4x Large Sprite - $8.000000
+===============================
+Order Subtotal:   $8.00
+Member Status:    No
+Tax Charged:      $0.64
+Tip Added:        $0.00
+Total Due:        $8.64
+Loyalty Points: **
+Notes: f
+===============================
+

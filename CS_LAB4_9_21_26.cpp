@@ -2,72 +2,49 @@
 #include <string>
 #include <iostream>
 #include <limits>
-#include <fstream>
+#include <fstream> // Required for file output
 
 int main()
 {
-	std::string food1, food2, food3, food4;
+    char anotherCustomer = 'Y';
+    double grandTotalSales = 0.0;
+    int TotalCustomers = 0;
 
-	double food1Sm, food1Med, food1Lg;
-	double food2Sm, food2Med, food2Lg;
-	double food3Sm, food3Med, food3Lg;
-	double food4Sm, food4Med, food4Lg;
+    // Inventory setup (12 items: 4 drinks * 3 sizes)
+    std::string itemNames[12] = {
+        "Small Coke", "Medium Coke", "Large Coke",
+        "Small Pepsi", "Medium Pepsi", "Large Pepsi",
+        "Small Sprite", "Medium Sprite", "Large Sprite",
+        "Small Fanta", "Medium Fanta", "Large Fanta"
+    };
+    int startInventory[12] = { 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
+    int changeInventory[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-	std::ifstream menuFile("menu.txt");
-
-	if (!menuFile)
-	{
-		std::cout << "Error opening menu file!\n";
-		return 1;
-	}
-
-	std::getline(menuFile, food1);
-	menuFile >> food1Sm >> food1Med >> food1Lg;
-	menuFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-	std::getline(menuFile, food2);
-	menuFile >> food2Sm >> food2Med >> food2Lg;
-	menuFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-	std::getline(menuFile, food3);
-	menuFile >> food3Sm >> food3Med >> food3Lg;
-	menuFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-	std::getline(menuFile, food4);
-	menuFile >> food4Sm >> food4Med >> food4Lg;
-
-	menuFile.close();
-
-
-	// Global receipt and tracking variables
-	double grandTotalSales = 0.0;
-	int TotalCustomers = 0;
-	char anotherCustomer = 'Y';
-
+    // Outer loop to handle multiple customers
     while (anotherCustomer == 'Y' || anotherCustomer == 'y')
     {
-
-
+        // Global receipt and tracking variables
         std::string customerName;
         double finalOrderTotal = 0.0;
         char memberInput;
-        bool isMember;
+        bool isMember = false;
         std::string cashierNotes;
 
         // String to store the itemized receipt contents
         std::string itemizedReceipt = "";
 
         // Loop logic variables
-        char itemChoise; // Matching your original variable spelling
+        char itemChoise;
         bool keepingShopping = true;
 
-        double stateTax = 0.0;
-        double countyTax = 0.0;
-        double cityTax = 0.0;
+        // Tax and Tip variables
+        double stateTax = 0.06;
+        double countyTax = 0.01;
+        double cityTax = 0.01;
         double totalTax = 0.0;
         double tipAmount = 0.0;
-        char tipChoice;
         double finalTotal = 0.0;
+        char tipChoice;
 
         // Ask for customer details upfront
         std::cout << "Enter customer name: ";
@@ -89,30 +66,22 @@ int main()
                 << std::setw(12) << "Medium (m)"
                 << std::setw(12) << "Large (l)" << "\n";
 
-            std::cout << std::fixed << std::setprecision(2);
-
-            std::cout << std::left << std::setw(18) << ("A) " + food1)
-                << "$" << std::setw(11) << food1Sm
-                << "$" << std::setw(11) << food1Med
-                << "$" << food1Lg << "\n";
-
-            std::cout << std::left << std::setw(18) << ("B) " + food2)
-                << "$" << std::setw(11) << food2Sm
-                << "$" << std::setw(11) << food2Med
-                << "$" << food2Lg << "\n";
-
-            std::cout << std::left << std::setw(18) << ("C) " + food3)
-                << "$" << std::setw(11) << food3Sm
-                << "$" << std::setw(11) << food3Med
-                << "$" << food3Lg << "\n";
-
-            std::cout << std::left << std::setw(18) << ("D) " + food4)
-                << "$" << std::setw(11) << food4Sm
-                << "$" << std::setw(11) << food4Med
-                << "$" << food4Lg << "\n";
-
-
-
+            std::cout << std::left << std::setw(18) << "A) Coke"
+                << std::setw(12) << "$1.00"
+                << std::setw(12) << "$1.50"
+                << std::setw(12) << "$2.00" << "\n";
+            std::cout << std::left << std::setw(18) << "B) Pepsi"
+                << std::setw(12) << "$1.00"
+                << std::setw(12) << "$1.50"
+                << std::setw(12) << "$2.00" << "\n";
+            std::cout << std::left << std::setw(18) << "C) Sprite"
+                << std::setw(12) << "$1.00"
+                << std::setw(12) << "$1.50"
+                << std::setw(12) << "$2.00" << "\n";
+            std::cout << std::left << std::setw(18) << "D) Fanta"
+                << std::setw(12) << "$1.00"
+                << std::setw(12) << "$1.50"
+                << std::setw(12) << "$2.00" << "\n";
             std::cout << std::left << std::setw(18) << "E) Checkout" << "\n";
             std::cout << "---------------------------------------------\n";
 
@@ -159,34 +128,39 @@ int main()
             // Assign core metrics based on drink selection
             std::string foodName;
             double unitPrice = 0.0;
+            int drinkBase = 0;
 
             if (itemChoise == 'A' || itemChoise == 'a')
             {
-                foodName = food1;
-                if (sizeChoice == 's' || sizeChoice == 'S') unitPrice = food1Sm;
-                else if (sizeChoice == 'm' || sizeChoice == 'M') unitPrice = food1Med;
-                else if (sizeChoice == 'l' || sizeChoice == 'L') unitPrice = food1Lg;
+                foodName = "Coke";
+                drinkBase = 0;
+                if (sizeChoice == 's' || sizeChoice == 'S') unitPrice = 1.00;
+                else if (sizeChoice == 'm' || sizeChoice == 'M') unitPrice = 1.50;
+                else if (sizeChoice == 'l' || sizeChoice == 'L') unitPrice = 2.00;
             }
             else if (itemChoise == 'B' || itemChoise == 'b')
             {
-                foodName = food2;
-                if (sizeChoice == 's' || sizeChoice == 'S') unitPrice = food2Sm;
-                else if (sizeChoice == 'm' || sizeChoice == 'M') unitPrice = food2Med;
-                else if (sizeChoice == 'l' || sizeChoice == 'L') unitPrice = food2Lg;
+                foodName = "Pepsi";
+                drinkBase = 3;
+                if (sizeChoice == 's' || sizeChoice == 'S') unitPrice = 1.00;
+                else if (sizeChoice == 'm' || sizeChoice == 'M') unitPrice = 1.50;
+                else if (sizeChoice == 'l' || sizeChoice == 'L') unitPrice = 2.00;
             }
             else if (itemChoise == 'C' || itemChoise == 'c')
             {
-                foodName = food3;
-                if (sizeChoice == 's' || sizeChoice == 'S') unitPrice = food3Sm;
-                else if (sizeChoice == 'm' || sizeChoice == 'M') unitPrice = food3Med;
-                else if (sizeChoice == 'l' || sizeChoice == 'L') unitPrice = food3Lg;
+                foodName = "Sprite";
+                drinkBase = 6;
+                if (sizeChoice == 's' || sizeChoice == 'S') unitPrice = 1.00;
+                else if (sizeChoice == 'm' || sizeChoice == 'M') unitPrice = 1.50;
+                else if (sizeChoice == 'l' || sizeChoice == 'L') unitPrice = 2.00;
             }
             else if (itemChoise == 'D' || itemChoise == 'd')
             {
-                foodName = food4;
-                if (sizeChoice == 's' || sizeChoice == 'S') unitPrice = food4Sm;
-                else if (sizeChoice == 'm' || sizeChoice == 'M') unitPrice = food4Med;
-                else if (sizeChoice == 'l' || sizeChoice == 'L') unitPrice = food4Lg;
+                foodName = "Fanta";
+                drinkBase = 9;
+                if (sizeChoice == 's' || sizeChoice == 'S') unitPrice = 1.00;
+                else if (sizeChoice == 'm' || sizeChoice == 'M') unitPrice = 1.50;
+                else if (sizeChoice == 'l' || sizeChoice == 'L') unitPrice = 2.00;
             }
 
             // 3. Item Quantity Input Validation Loop
@@ -206,23 +180,31 @@ int main()
                 }
                 else
                 {
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     break;
                 }
             }
             std::cout << " \n";
+
+            // Update inventory tracking array
+            int sizeOffset = 0;
+            if (sizeChoice == 'm' || sizeChoice == 'M') sizeOffset = 1;
+            else if (sizeChoice == 'l' || sizeChoice == 'L') sizeOffset = 2;
+
+            int inventoryIndex = drinkBase + sizeOffset;
+            changeInventory[inventoryIndex] -= itemQuantity;
 
             // Process running totals
             double itemSubtotal = itemQuantity * unitPrice;
             finalOrderTotal += itemSubtotal;
 
             // Append line item to the text log
-            itemizedReceipt += std::to_string(itemQuantity) + "x " + sizeName + " " + foodName + "\n";
+            itemizedReceipt += std::to_string(itemQuantity) + "x " + sizeName + " " + foodName + " - $" + std::to_string(itemSubtotal) + "\n";
 
             std::cout << "Added " << itemQuantity << "x " << foodName << " to your order.\n\n";
         }
 
         // Wrap up data processing before checkout printout
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Enter cashier notes: ";
         std::getline(std::cin, cashierNotes);
         std::cout << " \n";
@@ -234,7 +216,7 @@ int main()
             finalPriceWithDiscount = finalOrderTotal * 0.90;
         }
 
-        // Calculate total tax based on the post-discount price
+        // Calculate total tax based on post-discount price
         totalTax = finalPriceWithDiscount * (stateTax + countyTax + cityTax);
 
         // Quick console ask for tip
@@ -247,16 +229,31 @@ int main()
 
         finalTotal = finalPriceWithDiscount + totalTax + tipAmount;
 
-        // Render multi-item updated receipt
+        // Render console receipt and write to receipt.txt simultaneously
+        std::ofstream receipt_fout("receipt.txt", std::ios::app);
+
+        // Header
         std::cout << "\n===============================\n";
         std::cout << "Store Receipt\n";
         std::cout << "Customer Name: " << customerName << "\n";
         std::cout << "===============================\n";
 
-        // Print out the accumulated order history
+        if (receipt_fout.is_open()) {
+            receipt_fout << "\n===============================\n";
+            receipt_fout << "Store Receipt\n";
+            receipt_fout << "Customer Name: " << customerName << "\n";
+            receipt_fout << "===============================\n";
+        }
+
+        // Items Ordered
         std::cout << "Items Ordered:\n" << itemizedReceipt;
         std::cout << "===============================\n";
+        if (receipt_fout.is_open()) {
+            receipt_fout << "Items Ordered:\n" << itemizedReceipt;
+            receipt_fout << "===============================\n";
+        }
 
+        // Financials
         std::cout << std::fixed << std::setprecision(2);
         std::cout << std::left << std::setw(18) << "Order Subtotal:" << "$" << finalOrderTotal << "\n";
         std::cout << std::left << std::setw(18) << "Member Status:"
@@ -265,21 +262,75 @@ int main()
         std::cout << std::left << std::setw(18) << "Tip Added:" << "$" << tipAmount << "\n";
         std::cout << std::left << std::setw(18) << "Total Due:" << "$" << finalTotal << "\n";
 
+        if (receipt_fout.is_open()) {
+            receipt_fout << std::fixed << std::setprecision(2);
+            receipt_fout << std::left << std::setw(18) << "Order Subtotal:" << "$" << finalOrderTotal << "\n";
+            receipt_fout << std::left << std::setw(18) << "Member Status:"
+                << (isMember ? "Yes (10% Discount Applied)" : "No") << "\n";
+            receipt_fout << std::left << std::setw(18) << "Tax Charged:" << "$" << totalTax << "\n";
+            receipt_fout << std::left << std::setw(18) << "Tip Added:" << "$" << tipAmount << "\n";
+            receipt_fout << std::left << std::setw(18) << "Total Due:" << "$" << finalTotal << "\n";
+        }
+
+        // Loyalty Points
+        int loyaltyPoints = static_cast<int>(finalTotal / 3);
+        std::cout << "Loyalty Points: ";
+        for (int i = 0; i < loyaltyPoints; i++) {
+            std::cout << "*";
+        }
+        std::cout << "\n";
+
+        if (receipt_fout.is_open()) {
+            receipt_fout << "Loyalty Points: ";
+            for (int i = 0; i < loyaltyPoints; i++) {
+                receipt_fout << "*";
+            }
+            receipt_fout << "\n";
+        }
+
+        // Notes & Footer
         if (!cashierNotes.empty()) {
             std::cout << "Notes: " << cashierNotes << "\n";
+            if (receipt_fout.is_open()) {
+                receipt_fout << "Notes: " << cashierNotes << "\n";
+            }
         }
         std::cout << "===============================\n";
-
-        while (anotherCustomer == 'Y' || anotherCustomer == 'y')
-        {
-
-            std::cout << "\n======== Daily Sales Summary ========\n";
-            std::cout << "Total Customers: " << TotalCustomers << "\n";
-            std::cout << std::fixed << std::setprecision(2);
-            std::cout << "Total Sales: $" << grandTotalSales << "\n";
-            std::cout << "======================\n";
-            return 0;
+        if (receipt_fout.is_open()) {
+            receipt_fout << "===============================\n\n";
+            receipt_fout.close();
         }
 
+        grandTotalSales += finalTotal;
+        TotalCustomers++;
+
+        std::cout << "Is there another customer? (Y/N): ";
+        std::cin >> anotherCustomer;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
-	
+
+    // Daily Sales Summary
+    std::cout << "\n======== Daily Sales Summary ========\n";
+    std::cout << "Total Customers: " << TotalCustomers << "\n";
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "Total Sales: $" << grandTotalSales << "\n";
+    std::cout << "=====================================\n";
+
+    // Daily Inventory Log
+    std::cout << "\nDaily Inventory\n";
+    std::cout << std::left << std::setw(25) << "Item"
+        << std::setw(10) << "Start"
+        << std::setw(10) << "Change"
+        << std::setw(10) << "End" << "\n";
+
+    for (int i = 0; i < 12; i++) {
+        int endInventory = startInventory[i] + changeInventory[i];
+        std::cout << std::left << std::setw(25) << itemNames[i]
+            << std::setw(10) << startInventory[i]
+            << std::setw(10) << changeInventory[i]
+            << std::setw(10) << endInventory << "\n";
+    }
+    std::cout << "=================================================\n";
+
+    return 0;
+}
