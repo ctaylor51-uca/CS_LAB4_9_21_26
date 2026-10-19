@@ -322,4 +322,7 @@ void printToFile(std::string fileName, std::string text)
         outFile << text << "\n";
         outFile.close();
     }
+    std::cout << "=================================================\n";
+
+    return 0;
 }
